@@ -1,8 +1,14 @@
 {
-  "name": "bolao-flowstate",
-  "version": "1.0.0",
-  "dependencies": {
-    "mercadopago": "^2.0.6",
-    "@supabase/supabase-js": "^2.39.0"
-  }
+  "version": 2,
+  "builds": [
+    { "src": "public/index.html", "use": "@vercel/static" },
+    { "src": "api/*.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/criar-pagamento", "dest": "/api/criar-pagamento.js" },
+    { "src": "/api/webhook", "dest": "/api/webhook.js" },
+    { "src": "/api/palpites", "dest": "/api/palpites.js" },
+    { "src": "/api/resultado", "dest": "/api/resultado.js" },
+    { "src": "/(.*)", "dest": "/public/index.html" }
+  ]
 }
