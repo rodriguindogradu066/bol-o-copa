@@ -112,7 +112,7 @@
     <div class="cd-sep">:</div>
     <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Seg</div></div>
   </div>
-  <div class="deadline-alert" id="deadline-alert">⏳ Palpites abrem amanhã às 07:00 · Encerram às 19:00</div>
+  <div class="deadline-alert" id="deadline-alert">⚠️ Palpites encerram às 19:00 de amanhã</div>
 </div>
 
 <div class="container">
@@ -218,14 +218,12 @@
 <script>
   let sc={sco:0,bra:0};
   const _am=new Date(); _am.setDate(_am.getDate()+1);
-  const abertura=new Date(_am); abertura.setHours(7,0,0,0);
   const deadline=new Date(_am); deadline.setHours(19,0,0,0);
 
   function updateCd(){
     const ag=new Date(); let diff,msg,open=true;
-    if(ag<abertura){diff=abertura-ag;msg='⏳ Palpites abrem amanhã às 07:00';open=false;}
-    else if(ag>=deadline){diff=0;msg='🔒 Palpites encerrados — Boa sorte!';open=false;}
-    else{diff=deadline-ag;msg='⚠️ Palpites encerram às 19:00';}
+    if(ag>=deadline){diff=0;msg='🔒 Palpites encerrados — Boa sorte!';open=false;}
+    else{diff=deadline-ag;msg='⚠️ Palpites encerram às 19:00 de amanhã';}
     const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
     document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
     document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
@@ -233,8 +231,7 @@
     document.getElementById('deadline-alert').textContent=msg;
     const btn=document.getElementById('submit-btn');
     btn.disabled=!open;
-    if(!open&&ag<abertura) btn.textContent='ABRE ÀS 07:00';
-    else if(!open) btn.textContent='PALPITES ENCERRADOS';
+    if(!open) btn.textContent='PALPITES ENCERRADOS';
     else btn.textContent='PAGAR E REGISTRAR PALPITE';
   }
   setInterval(updateCd,1000); updateCd();
