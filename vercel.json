@@ -1,12 +1,10 @@
 {
   "version": 2,
-  "functions": {
-    "api/server.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/server.js" },
+    { "src": "/api/criar-pagamento", "dest": "/api/criar-pagamento.js" },
+    { "src": "/api/webhook", "dest": "/api/webhook.js" },
+    { "src": "/api/palpites", "dest": "/api/palpites.js" },
+    { "src": "/api/resultado", "dest": "/api/resultado.js" },
     { "src": "/(.*)", "dest": "/public/index.html" }
   ]
 }
