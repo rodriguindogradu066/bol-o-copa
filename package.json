@@ -1,0 +1,16 @@
+{
+  "name": "bolao-flowstate",
+  "version": "1.0.0",
+  "main": "api/server.js",
+  "scripts": {
+    "start": "node api/server.js",
+    "dev": "nodemon api/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mercadopago": "^2.0.6",
+    "@supabase/supabase-js": "^2.39.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  }
+}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão Flow State · Escócia x Brasil</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --green:#00E676;--green-dim:#00C853;--gold:#FFD600;--bg:#080C0A;--surface:#0F1610;--card:#141A15;--border:#1E2A1F;--text:#E8F5E9;--muted:#5A7A5C;--danger:#FF5252; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+  .hero{position:relative;padding:60px 20px 40px;text-align:center;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,230,118,.08) 0%,transparent 70%);pointer-events:none;}
+  .brand{font-size:11px;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:16px;font-weight:600;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,12vw,100px);line-height:.9;letter-spacing:2px;color:var(--text);margin-bottom:8px;}
+  .hero-title span{color:var(--green);}
+  .match-badge{display:inline-flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:10px 24px;margin:24px 0;font-size:13px;color:var(--muted);letter-spacing:1px;}
+  .match-badge .flags{display:flex;align-items:center;gap:8px;font-size:20px;}
+  .match-badge .vs{font-weight:700;color:var(--text);font-size:11px;letter-spacing:2px;}
+  .match-info{font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+  .countdown-row{display:flex;justify-content:center;gap:12px;margin:28px 0 0;}
+  .cd-block{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .cd-num{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--green);line-height:1;min-width:60px;text-align:center;}
+  .cd-label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+  .cd-sep{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--border);padding-top:4px;}
+  .deadline-alert{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.2);border-radius:8px;padding:10px 20px;font-size:12px;color:var(--danger);max-width:420px;margin:16px auto 0;}
+  .container{max-width:860px;margin:0 auto;padding:0 20px 80px;}
+  .premio-card{background:linear-gradient(135deg,rgba(0,230,118,.05),rgba(255,214,0,.03));border:1px solid rgba(0,230,118,.15);border-radius:16px;padding:22px;margin-bottom:20px;display:flex;gap:16px;align-items:flex-start;}
+  .premio-icon{font-size:32px;flex-shrink:0;}
+  .premio-info h3{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--gold);margin-bottom:4px;}
+  .premio-info p{font-size:13px;color:var(--muted);line-height:1.6;}
+  .fundo-banner{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+  .fundo-label{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+  .fundo-value{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--green);line-height:1;}
+  .fundo-note{font-size:11px;color:var(--muted);}
+  .form-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px;}
+  .section-label{font-size:10px;letter-spacing:3px;color:var(--green);text-transform:uppercase;font-weight:600;margin-bottom:16px;}
+  .placar-widget{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:20px;}
+  .placar-title{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:18px;}
+  .placar-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;}
+  .team-block{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .team-flag{font-size:36px;}
+  .team-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;}
+  .score-controls{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .score-btn{width:32px;height:32px;background:var(--border);border:none;border-radius:6px;color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:'Inter',sans-serif;}
+  .score-btn:hover{background:var(--green);color:var(--bg);}
+  .score-display{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--text);line-height:1;min-width:44px;text-align:center;}
+  .score-sep{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--border);line-height:1;}
+  .placar-center{display:flex;align-items:center;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:540px){.form-grid{grid-template-columns:1fr;}}
+  label{display:block;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;font-weight:500;}
+  input[type="text"],input[type="number"],input[type="password"]{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;transition:border-color .2s;-moz-appearance:textfield;}
+  input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;}
+  input:focus{outline:none;border-color:var(--green);}
+  .valor-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .valor-chip{padding:7px 14px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;}
+  .valor-chip.active,.valor-chip:hover{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.07);}
+  .pix-info-box{background:rgba(0,230,118,.04);border:1px solid rgba(0,230,118,.12);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--muted);line-height:1.6;}
+  .pix-info-box strong{color:var(--green);}
+  .submit-btn{width:100%;background:var(--green);color:var(--bg);border:none;border-radius:10px;padding:16px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+  .submit-btn:hover{background:var(--green-dim);transform:translateY(-1px);}
+  .submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+  .ranking-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px;}
+  .ranking-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);}
+  .ranking-header h2{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;}
+  .total-badge{background:rgba(0,230,118,.1);color:var(--green);border-radius:100px;padding:4px 12px;font-size:12px;font-weight:600;}
+  .palpite-item{display:grid;grid-template-columns:28px 1fr auto auto;align-items:center;gap:12px;padding:14px 22px;border-bottom:1px solid var(--border);transition:background .15s;}
+  .palpite-item:last-child{border-bottom:none;}
+  .palpite-item:hover{background:rgba(255,255,255,.02);}
+  .palpite-pos{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--muted);text-align:center;}
+  .palpite-pos.gold{color:var(--gold);}
+  .palpite-name{font-weight:500;font-size:14px;}
+  .palpite-score-display{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--green);}
+  .palpite-valor{font-size:12px;color:var(--muted);text-align:right;}
+  .winner-tag{background:var(--gold);color:var(--bg);font-size:10px;font-weight:700;letter-spacing:1px;border-radius:4px;padding:2px 7px;text-transform:uppercase;margin-left:6px;}
+  .empty-state{text-align:center;padding:44px 24px;color:var(--muted);font-size:14px;}
+  .empty-state .emoji{font-size:30px;margin-bottom:10px;}
+  .divider{height:1px;background:var(--border);margin:28px 0;}
+  .admin-toggle{text-align:center;margin:8px 0 40px;}
+  .admin-link{font-size:11px;color:var(--muted);cursor:pointer;letter-spacing:1px;text-decoration:underline;background:none;border:none;font-family:'Inter',sans-serif;}
+  .admin-panel{background:var(--card);border:1px solid rgba(255,82,82,.15);border-radius:16px;padding:24px;margin-bottom:40px;display:none;}
+  .admin-panel.open{display:block;}
+  .admin-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--danger);letter-spacing:2px;margin-bottom:20px;}
+  .form-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px;}
+  .form-row .field{flex:1;min-width:110px;}
+  .btn-red{background:var(--danger);color:white;border:none;border-radius:8px;padding:12px 20px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;cursor:pointer;transition:opacity .2s;white-space:nowrap;}
+  .btn-red:hover{opacity:.85;}
+  .admin-section-label{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .dot-red{background:var(--danger);box-shadow:0 0 6px var(--danger);}
+  .resultado-box{background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);border-radius:10px;padding:16px;margin-top:16px;font-size:14px;line-height:1.8;}
+  .resultado-box strong{color:var(--green);}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:var(--bg);border-radius:100px;padding:12px 28px;font-weight:700;font-size:14px;z-index:999;transition:transform .35s cubic-bezier(.175,.885,.32,1.275);white-space:nowrap;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .toast.error{background:var(--danger);color:white;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="brand">Flow State · Bolão Copa 2026</div>
+  <div class="hero-title">CHUTA<br><span>O PLACAR</span></div>
+  <div class="match-badge">
+    <div class="flags"><span>🏴󠁧󠁢󠁳󠁣󠁴󠁿</span><span class="vs">VS</span><span>🇧🇷</span></div>
+    <span>Escócia x Brasil · Grupo C</span>
+  </div>
+  <div class="match-info">Copa do Mundo FIFA 2026™ · Amanhã, 19:00</div>
+  <div class="countdown-row">
+    <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-label">Horas</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-label">Min</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Seg</div></div>
+  </div>
+  <div class="deadline-alert" id="deadline-alert">⏳ Palpites abrem amanhã às 07:00 · Encerram às 19:00</div>
+</div>
+
+<div class="container">
+  <div class="premio-card">
+    <div class="premio-icon">🏆</div>
+    <div class="premio-info">
+      <h3>Acertou o placar exato? Você ganha!</h3>
+      <p>Quem acertar divide o fundo total. Campeão do ranking leva a <strong style="color:var(--green)">camiseta oficial do Brasil Flow State</strong> com 15% de desconto.</p>
+    </div>
+  </div>
+
+  <div class="fundo-banner">
+    <div>
+      <div class="fundo-label">Fundo do Jogo</div>
+      <div class="fundo-value" id="fundo-display">R$ 0</div>
+    </div>
+    <div class="fundo-note" id="fundo-participantes">0 participantes</div>
+  </div>
+
+  <div class="form-card">
+    <div class="section-label">Seu Palpite</div>
+    <div class="placar-widget">
+      <div class="placar-title">Qual vai ser o placar?</div>
+      <div class="placar-row">
+        <div class="team-block">
+          <div class="team-flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+          <div class="team-name">Escócia</div>
+          <div class="score-controls">
+            <button class="score-btn" onclick="chg('sco',1)">+</button>
+            <div class="score-display" id="sco-s">0</div>
+            <button class="score-btn" onclick="chg('sco',-1)">−</button>
+          </div>
+        </div>
+        <div class="placar-center"><div class="score-sep">:</div></div>
+        <div class="team-block">
+          <div class="team-flag">🇧🇷</div>
+          <div class="team-name">Brasil</div>
+          <div class="score-controls">
+            <button class="score-btn" onclick="chg('bra',1)">+</button>
+            <div class="score-display" id="bra-s">0</div>
+            <button class="score-btn" onclick="chg('bra',-1)">−</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div><label>Seu nome</label><input type="text" id="nome" placeholder="Ex: João Silva" maxlength="30"></div>
+      <div><label>Valor (mín. R$ 5)</label><input type="number" id="valor" placeholder="R$ 5" min="5" step="1"></div>
+    </div>
+
+    <div class="valor-row">
+      <span style="font-size:11px;color:var(--muted)">Rápido:</span>
+      <button class="valor-chip" onclick="setVal(5,this)">R$ 5</button>
+      <button class="valor-chip" onclick="setVal(10,this)">R$ 10</button>
+      <button class="valor-chip" onclick="setVal(20,this)">R$ 20</button>
+      <button class="valor-chip" onclick="setVal(50,this)">R$ 50</button>
+    </div>
+
+    <div class="pix-info-box">
+      💳 Ao clicar no botão abaixo, você será redirecionado para o checkout do <strong>Mercado Pago</strong> para pagar via PIX. Após o pagamento, seu palpite é confirmado <strong>automaticamente</strong>.
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="pagar()">PAGAR E REGISTRAR PALPITE</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="ranking-card">
+    <div class="ranking-header">
+      <h2>🏟️ Palpites da Galera</h2>
+      <span class="total-badge" id="total-badge">0 palpites</span>
+    </div>
+    <div id="palpites-list"><div class="empty-state"><div class="emoji">⚽</div>Carregando palpites...</div></div>
+  </div>
+
+  <div class="admin-toggle">
+    <button class="admin-link" onclick="toggleAdmin()">⚙ Painel Admin</button>
+  </div>
+
+  <div class="admin-panel" id="admin-panel">
+    <div class="admin-title">⚙ Painel Admin</div>
+    <div id="admin-login">
+      <div class="form-row">
+        <div class="field"><label>Senha</label><input type="password" id="admin-pass" placeholder="••••••" onkeydown="if(event.key==='Enter')entrarAdmin()"></div>
+        <button class="btn-red" onclick="entrarAdmin()">ENTRAR</button>
+      </div>
+    </div>
+    <div id="admin-content" style="display:none">
+      <div class="admin-section-label"><span class="dot dot-red"></span>Lançar resultado real</div>
+      <div class="form-row">
+        <div class="field"><label>Gols Escócia 🏴󠁧󠁢󠁳󠁣󠁴󠁿</label><input type="number" id="res-sco" placeholder="0" min="0"></div>
+        <div class="field"><label>Gols Brasil 🇧🇷</label><input type="number" id="res-bra" placeholder="0" min="0"></div>
+        <button class="btn-red" onclick="lancarResultado()">LANÇAR</button>
+      </div>
+      <div id="resultado-box"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let sc={sco:0,bra:0};
+  const _am=new Date(); _am.setDate(_am.getDate()+1);
+  const abertura=new Date(_am); abertura.setHours(7,0,0,0);
+  const deadline=new Date(_am); deadline.setHours(19,0,0,0);
+
+  function updateCd(){
+    const ag=new Date(); let diff,msg,open=true;
+    if(ag<abertura){diff=abertura-ag;msg='⏳ Palpites abrem amanhã às 07:00';open=false;}
+    else if(ag>=deadline){diff=0;msg='🔒 Palpites encerrados — Boa sorte!';open=false;}
+    else{diff=deadline-ag;msg='⚠️ Palpites encerram às 19:00';}
+    const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+    document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+    document.getElementById('deadline-alert').textContent=msg;
+    const btn=document.getElementById('submit-btn');
+    btn.disabled=!open;
+    if(!open&&ag<abertura) btn.textContent='ABRE ÀS 07:00';
+    else if(!open) btn.textContent='PALPITES ENCERRADOS';
+    else btn.textContent='PAGAR E REGISTRAR PALPITE';
+  }
+  setInterval(updateCd,1000); updateCd();
+
+  function chg(t,d){sc[t]=Math.max(0,sc[t]+d);document.getElementById(t+'-s').textContent=sc[t];}
+  function setVal(v,el){document.getElementById('valor').value=v;document.querySelectorAll('.valor-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+
+  async function pagar(){
+    const nome=document.getElementById('nome').value.trim();
+    const valor=parseFloat(document.getElementById('valor').value);
+    if(!nome){showToast('Informe seu nome',true);return;}
+    if(!valor||valor<5){showToast('Valor mínimo R$ 5',true);return;}
+    const btn=document.getElementById('submit-btn');
+    btn.disabled=true; btn.textContent='AGUARDA...';
+    try{
+      const res=await fetch('/api/criar-pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome,gols_sco:sc.sco,gols_bra:sc.bra,valor})});
+      const data=await res.json();
+      if(data.init_point) window.location.href=data.init_point;
+      else throw new Error();
+    }catch(e){
+      showToast('Erro ao criar pagamento. Tenta de novo.',true);
+      btn.disabled=false; btn.textContent='PAGAR E REGISTRAR PALPITE';
+    }
+  }
+
+  async function carregarPalpites(){
+    try{
+      const res=await fetch('/api/palpites');
+      const data=await res.json();
+      renderPalpites(data);
+    }catch(e){document.getElementById('palpites-list').innerHTML='<div class="empty-state"><div class="emoji">⚽</div>Nenhum palpite ainda.</div>';}
+  }
+
+  function renderPalpites(list){
+    const total=list.reduce((s,p)=>s+Number(p.valor),0);
+    document.getElementById('fundo-display').textContent='R$ '+total.toFixed(0);
+    document.getElementById('fundo-participantes').textContent=list.length+' participante'+(list.length!==1?'s':'');
+    document.getElementById('total-badge').textContent=list.length+' palpite'+(list.length!==1?'s':'');
+    const el=document.getElementById('palpites-list');
+    if(!list.length){el.innerHTML='<div class="empty-state"><div class="emoji">⚽</div>Nenhum palpite confirmado ainda. Seja o primeiro!</div>';return;}
+    const sorted=[...list].sort((a,b)=>{if(a.acertou&&!b.acertou)return -1;if(!a.acertou&&b.acertou)return 1;return a.nome.localeCompare(b.nome);});
+    el.innerHTML=sorted.map((p,i)=>`<div class="palpite-item"><div class="palpite-pos ${p.acertou?'gold':''}">${p.acertou?'🏆':i+1}</div><div class="palpite-name">${esc(p.nome)}${p.acertou?'<span class="winner-tag">Acertou!</span>':''}</div><div class="palpite-score-display">${p.gols_sco} : ${p.gols_bra}</div><div class="palpite-valor">R$ ${Number(p.valor).toFixed(0)}</div></div>`).join('');
+  }
+
+  const st=new URLSearchParams(window.location.search).get('status');
+  if(st==='sucesso') showToast('Pagamento confirmado! Palpite registrado ✅');
+  if(st==='falha') showToast('Pagamento não concluído. Tenta de novo.',true);
+  if(st==='pendente') showToast('PIX pendente — confirme no app 💸');
+
+  const PASS='flowstate2026';
+  function toggleAdmin(){document.getElementById('admin-panel').classList.toggle('open');}
+  function entrarAdmin(){
+    if(document.getElementById('admin-pass').value===PASS){
+      document.getElementById('admin-login').style.display='none';
+      document.getElementById('admin-content').style.display='block';
+      showToast('Acesso liberado ✅');
+    }else showToast('Senha incorreta',true);
+  }
+
+  async function lancarResultado(){
+    const resSco=parseInt(document.getElementById('res-sco').value);
+    const resBra=parseInt(document.getElementById('res-bra').value);
+    if(isNaN(resSco)||isNaN(resBra)){showToast('Informe o resultado',true);return;}
+    try{
+      const res=await fetch('/api/resultado',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({senha:PASS,gols_sco:resSco,gols_bra:resBra})});
+      const data=await res.json();
+      document.getElementById('resultado-box').innerHTML=`<div class="resultado-box">Resultado: <strong>${data.resultado}</strong><br>Participantes: <strong>${data.total_participantes}</strong><br>Acertadores: <strong>${data.acertadores}</strong><br>Fundo total: <strong>R$ ${data.fundo_total}</strong><br>Prêmio por pessoa: <strong>R$ ${data.premio_por_pessoa}</strong></div>`;
+      carregarPalpites();
+      showToast('Resultado '+data.resultado+' lançado! 🏆');
+    }catch(e){showToast('Erro ao lançar resultado',true);}
+  }
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function showToast(msg,error=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(error?' error':'');setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>t.classList.remove('show'),3500);}
+
+  carregarPalpites();
+  setInterval(carregarPalpites,15000);
+</script>
+</body>
+</html>
