@@ -112,7 +112,7 @@
     <div class="cd-sep">:</div>
     <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Seg</div></div>
   </div>
-  <div class="deadline-alert" id="deadline-alert">⚠️ Palpites encerram às 19:00 de amanhã</div>
+  <div class="deadline-alert" id="deadline-alert">⚠️ Palpites encerram às 19:00 de hoje</div>
 </div>
 
 <div class="container">
@@ -217,13 +217,13 @@
 
 <script>
   let sc={sco:0,bra:0};
-  const _am=new Date(); _am.setDate(_am.getDate()+1);
+  const _am=new Date(); _am.setDate(_am.getDate());
   const deadline=new Date(_am); deadline.setHours(19,0,0,0);
 
   function updateCd(){
     const ag=new Date(); let diff,msg,open=true;
     if(ag>=deadline){diff=0;msg='🔒 Palpites encerrados — Boa sorte!';open=false;}
-    else{diff=deadline-ag;msg='⚠️ Palpites encerram às 19:00 de amanhã';}
+    else{diff=deadline-ag;msg='⚠️ Palpites encerram às 19:00 de hoje';}
     const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
     document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
     document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
