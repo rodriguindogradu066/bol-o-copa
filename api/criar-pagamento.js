@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ erro: 'Método não permitido' });
 
   const { nome, gols_sco, gols_bra, valor } = req.body;
-  if (!nome || valor < 5 || gols_sco === undefined || gols_bra === undefined)
+  if (!nome || valor < 2 || gols_sco === undefined || gols_bra === undefined)
     return res.status(400).json({ erro: 'Dados inválidos' });
 
   const mp = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
